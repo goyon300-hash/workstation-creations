@@ -26,6 +26,22 @@ An index of personal agent extensions, automation scripts, and local programs. E
 
 Edit canonical project source, run its tests, inspect `git diff`, and commit a focused change. Installing a local tool does not automatically commit future changes or prove a remote backup exists.
 
+## Check installed-copy drift
+
+A read-only helper compares canonical source, installed copies and recorded hashes
+from a trusted private `creation-deployment/1` manifest:
+
+```sh
+python3 -B tools/check-installation.py
+python3 -B tools/check-installation.py --manifest /path/to/private/deployed.json
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
+```
+
+Exit 0 means every recorded copy matches; 1 means drift, stale metadata or a
+missing file; 2 means invalid/unreadable manifest. It never installs, edits,
+commits or pushes. It checks only listed files, not every file on the PC. Paths
+printed locally may be private; do not publish the manifest or raw output.
+
 ## Scope and privacy
 
 These repositories contain reviewed source and synthetic examples, not a full workstation backup. Credentials, actual model inventories, notification destinations, personal startup commands, conversations, runtime databases, agent state, machine-specific environment files and migration backups must stay private.
